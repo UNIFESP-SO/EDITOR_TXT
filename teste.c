@@ -24,9 +24,9 @@ int conta_espaco(char *str, int m)
     return conta;
 }
 
-int formata(char *str, int m){
-    char aux_str[MAX_M];
-    int i, j = 0, aux = 0, a = 0;
+int formata(char *str, char *aux_str, int m, int *j){
+
+    int i, aux = 0, a = 0;
     int respaco, ainserir, restoain;
 
     if(m <= n){
@@ -46,24 +46,23 @@ int formata(char *str, int m){
             }
 
             while(aux < i ){
-                aux_str[j] = str[aux];
-                j++;
+                aux_str[(*j)] = str[aux];
+                (*j)++;
                 aux++;
                 if(str[aux] == ' '){
                     for(a = 0; a < ainserir;  a++){
-                        aux_str[j] = ' ';
-                        j++;
+                        aux_str[(*j)] = ' ';
+                        (*j)++;
                     }
                     if(restoain > 0){
-                        aux_str[j] = ' ';
+                        aux_str[(*j)] = ' ';
                         restoain--;
-                        j++;
+                        (*j)++;
                     }
                 }
             }
-            aux_str[j] = '\n';
-            j++;
-            aux_str[j] = '\0';
+            aux_str[(*j)] = '\n';
+            (*j)++;
         }
     }
     return i;
@@ -72,8 +71,13 @@ int formata(char *str, int m){
 void main(){
     char *str;
     str = (char *)calloc(MAX_M, sizeof(char));
+    char *aux_str;
+    aux_str = (char *)calloc(MAX_M, sizeof(char));
     char buffer[MAX_BUFF];
     int m, espacos, mn, aux, a;
+    int *j;
+    j = (int *)malloc(sizeof(int));
+    (*j) = 0;
 
     produz(str);
     m = strlen(str) - 1;
@@ -83,13 +87,13 @@ void main(){
 
      do{
         a = 0;
-        printf("%s\n%d\nespaços = %d\n", str, m, espacos);
-        aux = formata(str, m);
+        aux = formata(str, aux_str, m, j);
         aux++;
         while(a < aux){
             str++;
             a++;
         }
     }while(strlen(str) > n);
-    printf("%s\n%d\nespaços = %d\n", str, m, espacos);
+
+     printf("%s\n", aux_str);
 }
